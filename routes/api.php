@@ -19,9 +19,10 @@ use App\Http\Controllers\MemberController;
 // });
 
 Route::prefix('member')->group(function(){
-    Route::post  ('', [MemberController::class, 'memberCreate']);
-    Route::get   ('', [MemberController::class, 'getMember']);
-    Route::put   ('', [MemberController::class, 'update']);
-    Route::delete('', [MemberController::class, 'delete']);
+    Route::post  ('/create', [MemberController::class, 'memberCreate']);
+    Route::get   ('/{id}', [MemberController::class, 'getMember']);
+    Route::get   ('/', [MemberController::class, 'getAllMembers']);
+    Route::put   ('/update', [MemberController::class, 'update']);
+    Route::delete('/delete/{id}', [MemberController::class, 'delete']);
 });
 
