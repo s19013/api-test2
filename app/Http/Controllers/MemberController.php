@@ -31,10 +31,10 @@ class MemberController extends Controller
         return response()->json($member);
     }
 
-    public function getMember(Request $request)
+    public function getMember($id)
     {
         # code...
-        $member = Member::find($request->id);
+        $member = Member::find($id);
         return response()->json($member);
     }
 
@@ -42,22 +42,25 @@ class MemberController extends Controller
     {
         // 見つけて変数に代入
         $member = Member::find($request->id);
+        // dd($request);
 
         // 更新
-        $member->update([
-            'name' => $request->name,
-            'gender' => $request->gender,
-            'age' => $request->age,
-            'address' => $request->address,
-            'tel' => $request->tel,
-        ]);
+        DB::transaction(function () use($request,$member){
+            $member->name    = $request->name;
+            $member->gender  = $request->gender;
+            $member->age     = $request->age;
+            $member->address = $request->address;
+            $member->tel     = $request->tel;
+
+            $member->save();
+        });
 
         return response()->json($member);
     }
 
-    public function delete(Request $request)
+    public function delete($id)
     {
-        $member = Member::find($request->id);
+        $member = Member::find($id);
         $member->delete();
         return response()->json();
     }
