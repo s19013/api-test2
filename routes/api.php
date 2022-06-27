@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\MemberController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::prefix('member')->group(function(){
+    Route::post  ('', [MemberController::class, 'memberCreate']);
+    Route::get   ('', [MemberController::class, 'getMember']);
+    Route::put   ('', [MemberController::class, 'update']);
+    Route::delete('', [MemberController::class, 'delete']);
 });
+
