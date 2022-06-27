@@ -4,27 +4,37 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Member;
+use DB;
 
 class MemberController extends Controller
 {
     //
     public function memberCreate(Request $request)
     {
-        $member = Member::create([
-            'name' => $request->name,
-            'gender' => $request->gender,
-            'age' => $request->age,
-            'address' => $request->address,
-            'tel' => $request->tel,
-        ]);
+        $member = new Member;
+        DB::transaction(function () use($request,$member){
+            $member->name    = $request->name;
+            $member->gender  = $request->gender;
+            $member->age     = $request->age;
+            $member->address = $request->address;
+            $member->tel     = $request->tel;
 
+            $member->save();
+        });
+
+        return response()->json($member);
+    }
+
+    public function getAllmembers()
+    {
+        $member = Member::all();
         return response()->json($member);
     }
 
     public function getMember(Request $request)
     {
         # code...
-        $member = Member::finde($request->id);
+        $member = Member::find($request->id);
         return response()->json($member);
     }
 
